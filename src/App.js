@@ -44,14 +44,8 @@ const tempWatchedData = [
 
 const average = (arr) => arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 // Header components
-function NavBar() {
-  return (
-    <nav className="nav-bar">
-      <Logo />
-      <Search />
-      <NumberOfSearchResults />
-    </nav>
-  );
+function NavBar({ children }) {
+  return <nav className="nav-bar">{children}</nav>;
 }
 function Search() {
   const [query, setQuery] = useState("");
@@ -65,61 +59,52 @@ function Logo() {
     </div>
   );
 }
-function NumberOfSearchResults() {
+function NumberOfSearchResults({ movies }) {
   return (
     <p className="num-results">
-      Found <strong>XX</strong> results
+      Found <strong>{movies.length}</strong> results
     </p>
   );
 }
 // Main Body Components
-function Main() {
-  return (
-    <main className="main">
-      <Watchlist />
-      <Watchedlist />
-    </main>
-  );
+function Main({ children }) {
+  return <main className="main">{children}</main>;
 }
-function Watchlist() {
-  const [isOpen1, setIsOpen1] = useState(true);
-  const [movies, setMovies] = useState(tempMovieData);
+function Box({ children }) {
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
     <div className="box">
-      <button className="btn-toggle" onClick={() => setIsOpen1((open) => !open)}>
-        {isOpen1 ? "–" : "+"}
+      <button className="btn-toggle" onClick={() => setIsOpen((open) => !open)}>
+        {isOpen ? "–" : "+"}
       </button>
-      {isOpen1 && (
-        <ul className="list">
-          {movies?.map((movie) => (
-            <Movie movie={movie} key={movie.imdbID} />
-          ))}
-        </ul>
-      )}
+      {isOpen && children}
     </div>
   );
 }
+function Watchlist({ movies }) {
+  return (
+    <ul className="list">
+      {movies?.map((movie) => (
+        <Movie movie={movie} key={movie.imdbID} />
+      ))}
+    </ul>
+  );
+}
+
 function Watchedlist() {
-  const [isOpen2, setIsOpen2] = useState(true);
   const [watched, setWatched] = useState(tempWatchedData);
 
   return (
-    <div className="box">
-      <MinMaxButton isOpen2={isOpen2} onOpenClose={setIsOpen2} />
+    <>
+      <WatchedlistSummary watched={watched} />
 
-      {isOpen2 && (
-        <>
-          <WatchedlistSummary watched={watched} />
-
-          <ul className="list">
-            {watched.map((movie) => (
-              <WatchedMovies movie={movie} key={movie.imdbID} />
-            ))}
-          </ul>
-        </>
-      )}
-    </div>
+      <ul className="list">
+        {watched.map((movie) => (
+          <WatchedMovies movie={movie} key={movie.imdbID} />
+        ))}
+      </ul>
+    </>
   );
 }
 function Movie({ movie, key }) {
@@ -195,10 +180,23 @@ function WatchedMovies({ movie, key }) {
   );
 }
 export default function App() {
+  const [movies, setMovies] = useState(tempMovieData);
+
   return (
     <>
-      <NavBar />
-      <Main />
+      <NavBar>
+        <Logo />
+        <Search />
+        <NumberOfSearchResults movies={movies} />
+      </NavBar>
+      <Main>
+        <Box>
+          <Watchlist movies={movies} />
+        </Box>
+        <Box>
+          <Watchedlist />
+        </Box>
+      </Main>
     </>
   );
 }
