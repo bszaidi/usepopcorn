@@ -19,21 +19,22 @@ const textStyle = {
 export default function StarRating({ maxRating = 5 }) {
   //   const [hoveredRating, setHoveredRating] = useState(0);
   const [rating, setRating] = useState(0);
+  const [hoveredRating, setHoveredRating] = useState(0);
   return (
     <div style={containerStyle}>
       <div style={starContainerStyle}>
         {Array.from({ length: maxRating }).map((_, index) => (
-          <Star key={index} index={index} onRate={() => setRating(index + 1)} full={rating >= index + 1} />
+          <Star key={index} index={index} onHoverIn={() => setHoveredRating(index + 1)} onHoverOut={() => setHoveredRating(0)} onRate={() => setRating(index + 1)} full={hoveredRating ? hoveredRating >= index + 1 : rating >= index + 1} />
         ))}
       </div>
 
-      {rating > 0 && <p style={textStyle}>{rating}</p>}
+      {hoveredRating > 0 && <p style={textStyle}>{hoveredRating}</p>}
     </div>
   );
 }
-function Star({ onRate, full }) {
+function Star({ onRate, full, onHoverIn, onHoverOut }) {
   return (
-    <span role="button" onClick={onRate}>
+    <span role="button" onClick={onRate} onMouseEnter={onHoverIn} onMouseLeave={onHoverOut}>
       {full ? "⭐️" : "☆"}
     </span>
   );
