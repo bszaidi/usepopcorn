@@ -9,6 +9,6 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.Fragment>
     {/* <App /> */}
-    <TextExpander>Hello my name is wong sun rob tenf=</TextExpander>
+    <TextExpander>Hello my name is wong sun rob tenf</TextExpander>
   </React.Fragment>
 );
