@@ -19,7 +19,7 @@ StarRating.propTypes = {
   defualtRating: PropTypes.number,
 };
 
-export default function StarRating({ maxRating = 5, color = "#fcc419", size = 100, messages = [], defualtRating = 0 }) {
+export default function StarRating({ maxRating = 5, color = "#fcc419", size = 30, messages = [], defualtRating = 0 }) {
   const textStyle = {
     lineHeight: "1.1",
     margin: "0",
