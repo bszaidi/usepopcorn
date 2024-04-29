@@ -19,7 +19,7 @@ StarRating.propTypes = {
   defualtRating: PropTypes.number,
 };
 
-export default function StarRating({ maxRating = 5, color = "#fcc419", size = 30, messages = [], defualtRating = 0 }) {
+export default function StarRating({ maxRating = 5, color = "#fcc419", size = 30, messages = [], defualtRating = 0, onSetRating }) {
   const textStyle = {
     lineHeight: "1.1",
     margin: "0",
@@ -27,12 +27,16 @@ export default function StarRating({ maxRating = 5, color = "#fcc419", size = 30
   };
   //   const [hoveredRating, setHoveredRating] = useState(0);
   const [rating, setRating] = useState(defualtRating);
+  function handleRating(rating) {
+    setRating(rating);
+    onSetRating(rating);
+  }
   const [hoveredRating, setHoveredRating] = useState(0);
   return (
     <div style={containerStyle}>
       <div style={starContainerStyle}>
         {Array.from({ length: maxRating }).map((_, index) => (
-          <Star color={color} size={size} key={index} index={index} onHoverIn={() => setHoveredRating(index + 1)} onHoverOut={() => setHoveredRating(0)} onRate={() => setRating(index + 1)} full={hoveredRating ? hoveredRating >= index + 1 : rating >= index + 1} />
+          <Star color={color} size={size} key={index} index={index} onHoverIn={() => setHoveredRating(index + 1)} onHoverOut={() => setHoveredRating(0)} onRate={() => handleRating(index + 1)} full={hoveredRating ? hoveredRating >= index + 1 : rating >= index + 1} />
         ))}
       </div>
 

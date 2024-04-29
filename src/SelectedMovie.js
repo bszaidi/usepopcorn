@@ -7,6 +7,7 @@ export default function SelectedMovie({ selectedID, onCloseMovieDetails, onSetWa
   const URL = `https://www.omdbapi.com/?apikey=${KEY}&i=${selectedID}`;
   const [movie, setMovie] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [movieRating, setMovieRating] = useState(0);
   function handleAdd() {
     const newWatchedMovie = {
       imdbID: movie.imdbID,
@@ -58,7 +59,7 @@ export default function SelectedMovie({ selectedID, onCloseMovieDetails, onSetWa
           <section>
             <div className="rating">
               {" "}
-              <StarRating />
+              <StarRating onSetRating={setMovieRating} />
               <button className="btn-add" onClick={handleAdd}>
                 Add to List
               </button>
