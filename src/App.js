@@ -167,7 +167,7 @@ export default function App() {
           {!isLoading && !error && <Watchlist movies={movies} onSelectMovie={handleMovieSelection} />}
           {error && <ErrorMessage message={error} />}
         </Box>
-        <Box>{selectedMovieId ? <SelectedMovie onSetWatched={handleSetWatched} selectedID={selectedMovieId} onCloseMovieDetails={handleCloseMovieDetails} /> : <WatchedList watched={watched} />}</Box>
+        <Box>{selectedMovieId ? <SelectedMovie onSetWatched={handleSetWatched} selectedID={selectedMovieId} onCloseMovieDetails={handleCloseMovieDetails} watched={watched} /> : <WatchedList watched={watched} />}</Box>
       </Main>
     </>
   );

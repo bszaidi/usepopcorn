@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import StarRating from "./StarRating";
 import Loader from "./Loader";
 
-export default function SelectedMovie({ selectedID, onCloseMovieDetails, onSetWatched }) {
+export default function SelectedMovie({ selectedID, onCloseMovieDetails, onSetWatched, watched }) {
   const KEY = "c3959e48";
   const URL = `https://www.omdbapi.com/?apikey=${KEY}&i=${selectedID}`;
   const [movie, setMovie] = useState(null);
+  const isWatched = watched.map((movie) => movie.imdbID).includes(selectedID);
   const [isLoading, setIsLoading] = useState(false);
   const [movieRating, setMovieRating] = useState(0);
   function handleAdd() {
@@ -59,11 +60,22 @@ export default function SelectedMovie({ selectedID, onCloseMovieDetails, onSetWa
           <section>
             <div className="rating">
               {" "}
-              <StarRating onSetRating={setMovieRating} />
-              <button className="btn-add" onClick={handleAdd}>
-                Add to List
-              </button>
+              {/*If movie is not watched display the stars*/}
+              {!isWatched ? (
+                <>
+                  <StarRating onSetRating={setMovieRating} />
+                  {/*If movie rating is greater than 0 display the add button*/}
+                  {movieRating > 0 && (
+                    <button className="btn-add" onClick={handleAdd}>
+                      Add to List
+                    </button>
+                  )}
+                </>
+              ) : (
+                <div>Watched and Rated !</div>
+              )}
             </div>
+
             <p>
               <em>{movie?.Plot}</em>
             </p>
