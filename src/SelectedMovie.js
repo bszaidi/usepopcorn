@@ -6,7 +6,7 @@ export default function SelectedMovie({ selectedID, onCloseMovieDetails, onSetWa
   const KEY = "c3959e48";
   const URL = `https://www.omdbapi.com/?apikey=${KEY}&i=${selectedID}`;
   const [movie, setMovie] = useState(null);
-  const isWatched = watched.map((movie) => movie.imdbID).includes(selectedID);
+
   const [isLoading, setIsLoading] = useState(false);
   const [movieRating, setMovieRating] = useState(0);
   function handleAdd() {
@@ -17,11 +17,13 @@ export default function SelectedMovie({ selectedID, onCloseMovieDetails, onSetWa
       Poster: movie.Poster,
       runtime: movie.Runtime.split(" ").at(0),
       imdbRating: Number(movie.imdbRating),
-      userRating: 0,
+      userRating: movieRating,
     };
     onSetWatched(newWatchedMovie);
   }
-
+  //Derived State
+  const isWatched = watched.map((movie) => movie.imdbID).includes(selectedID);
+  const watchedUserrating = watched.find((movie) => movie.imdbID === selectedID)?.userRating;
   useEffect(
     function () {
       async function fetchData() {
@@ -72,7 +74,7 @@ export default function SelectedMovie({ selectedID, onCloseMovieDetails, onSetWa
                   )}
                 </>
               ) : (
-                <div>Watched and Rated !</div>
+                <div>Watched and Rated {watchedUserrating} ⭐️ </div>
               )}
             </div>
 
