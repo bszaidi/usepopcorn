@@ -115,6 +115,7 @@ export default function App() {
     setWatched((watched) => [...watched, movie]);
     console.log(watched);
   }
+
   function handleMovieSelection(id) {
     setSelectedMovieId(id);
   }
@@ -153,7 +154,9 @@ export default function App() {
     },
     [query]
   );
-
+  function handleDeleteWatched(id) {
+    setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
+  }
   return (
     <>
       <NavBar>
@@ -167,7 +170,7 @@ export default function App() {
           {!isLoading && !error && <Watchlist movies={movies} onSelectMovie={handleMovieSelection} />}
           {error && <ErrorMessage message={error} />}
         </Box>
-        <Box>{selectedMovieId ? <SelectedMovie onSetWatched={handleSetWatched} selectedID={selectedMovieId} onCloseMovieDetails={handleCloseMovieDetails} watched={watched} /> : <WatchedList watched={watched} />}</Box>
+        <Box>{selectedMovieId ? <SelectedMovie onSetWatched={handleSetWatched} selectedID={selectedMovieId} onCloseMovieDetails={handleCloseMovieDetails} watched={watched} /> : <WatchedList watched={watched} handleDeleteWatched={handleDeleteWatched} />}</Box>
       </Main>
     </>
   );

@@ -1,28 +1,33 @@
 import React, { useState } from "react";
-const tempWatchedData = [
-  {
-    imdbID: "tt1375666",
-    Title: "Inception",
-    Year: "2010",
-    Poster: "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
-    runtime: 148,
-    imdbRating: 8.8,
-    userRating: 10,
-  },
-  {
-    imdbID: "tt0088763",
-    Title: "Back to the Future",
-    Year: "1985",
-    Poster: "https://m.media-amazon.com/images/M/MV5BZmU0M2Y1OGUtZjIxNi00ZjBkLTg1MjgtOWIyNThiZWIwYjRiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
-    runtime: 116,
-    imdbRating: 8.5,
-    userRating: 9,
-  },
-];
+import PropTypes from "prop-types";
+WatchedList.propTypes = {
+  onDeleteWatched: PropTypes.func.isRequired,
+};
+// const tempWatchedData = [
+//   {
+//     imdbID: "tt1375666",
+//     Title: "Inception",
+//     Year: "2010",
+//     Poster: "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
+//     runtime: 148,
+//     imdbRating: 8.8,
+//     userRating: 10,
+//   },
+//   {
+//     imdbID: "tt0088763",
+//     Title: "Back to the Future",
+//     Year: "1985",
+//     Poster: "https://m.media-amazon.com/images/M/MV5BZmU0M2Y1OGUtZjIxNi00ZjBkLTg1MjgtOWIyNThiZWIwYjRiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+//     runtime: 116,
+//     imdbRating: 8.5,
+//     userRating: 9,
+//   },
+// ];
 const average = (arr) => arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
-export default function WatchedList(watched) {
+export default function WatchedList(watched, handleDeleteWatched) {
   console.log(watched.watched);
+  console.log(`f is ` + handleDeleteWatched);
 
   return (
     <>
@@ -30,7 +35,7 @@ export default function WatchedList(watched) {
 
       <ul className="list">
         {watched.watched.map((movie) => (
-          <WatchedMovies movie={movie} key={movie.imdbID} />
+          <WatchedMovies movie={movie} key={movie.imdbID} handleDeleteWatched={handleDeleteWatched} />
         ))}
       </ul>
     </>
@@ -51,11 +56,11 @@ function WatchedlistSummary({ watched }) {
         </p>
         <p>
           <span>⭐️</span>
-          <span>{avgImdbRating}</span>
+          <span>{avgImdbRating.toFixed(2)}</span>
         </p>
         <p>
           <span>🌟</span>
-          <span>{avgUserRating}</span>
+          <span>{avgUserRating.toFixed(2)}</span>
         </p>
         <p>
           <span>⏳</span>
@@ -65,7 +70,7 @@ function WatchedlistSummary({ watched }) {
     </div>
   );
 }
-function WatchedMovies({ movie, key }) {
+function WatchedMovies({ movie, key, handleDeleteWatched }) {
   return (
     <li key={key}>
       <img src={movie.Poster} alt={`${movie.Title} poster`} />
@@ -83,6 +88,9 @@ function WatchedMovies({ movie, key }) {
           <span>⏳</span>
           <span>{movie.runtime} min</span>
         </p>
+        {/* <button className="btn-delete" onClick={() => handleDeleteWatched(movie.imdbID)}>
+          x
+        </button> */}
       </div>
     </li>
   );
