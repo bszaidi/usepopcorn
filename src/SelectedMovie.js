@@ -38,7 +38,13 @@ export default function SelectedMovie({ selectedID, onCloseMovieDetails, onSetWa
     },
     [selectedID]
   );
-
+  // Changing Tilte of the page
+  useEffect(
+    function () {
+      document.title = movie?.Title || "Movie Details";
+    },
+    [movie]
+  );
   return (
     <div className="details">
       {isLoading ? (
