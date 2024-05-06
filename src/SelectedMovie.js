@@ -21,20 +21,37 @@ export default function SelectedMovie({ selectedID, onCloseMovieDetails, onSetWa
     };
     onSetWatched(newWatchedMovie);
   }
+  useEffect(
+    function () {
+      function callback(event) {
+        if (event.key === "Escape") onCloseMovieDetails();
+        // console.log("closing");
+      }
+      document.addEventListener("keydown", callback);
+      return function () {
+        document.removeEventListener("keydown", callback);
+      };
+    },
+    [onCloseMovieDetails]
+  );
   //Derived State
   const isWatched = watched.map((movie) => movie.imdbID).includes(selectedID);
   const watchedUserrating = watched.find((movie) => movie.imdbID === selectedID)?.userRating;
   useEffect(
     function () {
+      const controller = new AbortController();
       async function fetchData() {
         setIsLoading(true);
-        const response = await fetch(URL);
+        const response = await fetch(URL, { signal: controller.signal });
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         setMovie(data);
         setIsLoading(false);
       }
       fetchData();
+      return function () {
+        controller.abort();
+      };
     },
     [selectedID]
   );
@@ -42,6 +59,9 @@ export default function SelectedMovie({ selectedID, onCloseMovieDetails, onSetWa
   useEffect(
     function () {
       document.title = movie?.Title || "Movie Details";
+      return function () {
+        document.title = "UsePopCorn";
+      };
     },
     [movie]
   );

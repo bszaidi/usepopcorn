@@ -113,7 +113,7 @@ export default function App() {
   const [watched, setWatched] = useState([]);
   function handleSetWatched(movie) {
     setWatched((watched) => [...watched, movie]);
-    console.log(watched);
+    // console.log(watched);
   }
 
   function handleMovieSelection(id) {
@@ -140,11 +140,11 @@ export default function App() {
           if (data.Respinse === "False") {
             throw new Error("Movie not found!");
           }
-          console.log(data);
-          console.log(data.Search);
+          // console.log(data);
+          // console.log(data.Search);
           setMovies(data.Search);
         } catch (err) {
-          console.log(err.message);
+          // console.log(err.message);
           setError(err.message);
         } finally {
           setIsLoading(false);
