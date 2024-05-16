@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import StarRating from "./StarRating";
 import Loader from "./Loader";
 
 export default function SelectedMovie({ selectedID, onCloseMovieDetails, onSetWatched, watched }) {
   const KEY = "c3959e48";
   const URL = `https://www.omdbapi.com/?apikey=${KEY}&i=${selectedID}`;
+  //Hooks
   const [movie, setMovie] = useState(null);
-
   const [isLoading, setIsLoading] = useState(false);
   const [movieRating, setMovieRating] = useState(0);
+  const countRef = useRef(0);
   function handleAdd() {
     const newWatchedMovie = {
       imdbID: movie.imdbID,
@@ -18,9 +19,16 @@ export default function SelectedMovie({ selectedID, onCloseMovieDetails, onSetWa
       runtime: movie.Runtime.split(" ").at(0),
       imdbRating: Number(movie.imdbRating),
       userRating: movieRating,
+      countRatingDecisions: countRef.current,
     };
     onSetWatched(newWatchedMovie);
   }
+  useEffect(
+    function () {
+      if (movieRating) countRef.current++;
+    },
+    [movieRating]
+  );
   useEffect(
     function () {
       function callback(event) {

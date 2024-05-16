@@ -25,9 +25,9 @@ WatchedList.propTypes = {
 // ];
 const average = (arr) => arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
-export default function WatchedList(watched, handleDeleteWatched) {
+export default function WatchedList(watched, onHandleDeleteWatched) {
   console.log(watched.watched);
-  console.log(`f is ` + handleDeleteWatched);
+  console.log(`f is ` + onHandleDeleteWatched);
 
   return (
     <>
@@ -35,7 +35,7 @@ export default function WatchedList(watched, handleDeleteWatched) {
 
       <ul className="list">
         {watched.watched.map((movie) => (
-          <WatchedMovies movie={movie} key={movie.imdbID} handleDeleteWatched={handleDeleteWatched} />
+          <WatchedMovies movie={movie} key={movie.imdbID} onHandleDeleteWatched={onHandleDeleteWatched} />
         ))}
       </ul>
     </>
@@ -70,7 +70,7 @@ function WatchedlistSummary({ watched }) {
     </div>
   );
 }
-function WatchedMovies({ movie, key, handleDeleteWatched }) {
+function WatchedMovies({ movie, key, onHandleDeleteWatched }) {
   return (
     <li key={key}>
       <img src={movie.Poster} alt={`${movie.Title} poster`} />
@@ -88,9 +88,9 @@ function WatchedMovies({ movie, key, handleDeleteWatched }) {
           <span>⏳</span>
           <span>{movie.runtime} min</span>
         </p>
-        {/* <button className="btn-delete" onClick={() => handleDeleteWatched(movie.imdbID)}>
+        <button className="btn-delete" onClick={() => onHandleDeleteWatched(movie.imdbID)}>
           x
-        </button> */}
+        </button>
       </div>
     </li>
   );

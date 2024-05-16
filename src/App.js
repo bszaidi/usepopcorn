@@ -110,7 +110,10 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState("");
   const [selectedMovieId, setSelectedMovieId] = useState(null);
-  const [watched, setWatched] = useState([]);
+  const [watched, setWatched] = useState(function () {
+    const storedValue = localStorage.getItem("watched");
+    return storedValue ? JSON.parse(storedValue) : [];
+  });
   function handleSetWatched(movie) {
     setWatched((watched) => [...watched, movie]);
     // console.log(watched);
@@ -122,6 +125,13 @@ export default function App() {
   function handleCloseMovieDetails() {
     setSelectedMovieId(null);
   }
+  //Effect to store watched movies in local storage
+  useEffect(
+    function () {
+      localStorage.setItem("watched", JSON.stringify(watched));
+    },
+    [watched]
+  );
 
   const KEY = "c3959e48";
   const URL = `https://www.omdbapi.com/?i=tt3896198&apikey=${KEY}&s=${query}`;
@@ -170,7 +180,7 @@ export default function App() {
           {!isLoading && !error && <Watchlist movies={movies} onSelectMovie={handleMovieSelection} />}
           {error && <ErrorMessage message={error} />}
         </Box>
-        <Box>{selectedMovieId ? <SelectedMovie onSetWatched={handleSetWatched} selectedID={selectedMovieId} onCloseMovieDetails={handleCloseMovieDetails} watched={watched} /> : <WatchedList watched={watched} handleDeleteWatched={handleDeleteWatched} />}</Box>
+        <Box>{selectedMovieId ? <SelectedMovie onSetWatched={handleSetWatched} selectedID={selectedMovieId} onCloseMovieDetails={handleCloseMovieDetails} watched={watched} /> : <WatchedList watched={watched} onHandleDeleteWatched={handleDeleteWatched} />}</Box>
       </Main>
     </>
   );
